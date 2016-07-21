@@ -12,10 +12,10 @@ params:
   MAVEN_CONFIG:
 
 inputs:
-  - name: pcfdemo
+  - name: concourse-demo
 
 run:
-  path: pcfdemo/ci/tasks/unit.sh
+  path: concourse-demo/ci/tasks/unit.sh
   args: [
-    --input-dir, pcfdemo
+    --input-dir, concourse-demo
   ]

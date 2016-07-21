@@ -1,6 +1,6 @@
 ---
 resources:
-  - name: pcfdemo
+  - name: concourse-demo
     type: git
     source:
       uri: {{github-uri}}
@@ -21,7 +21,7 @@ resources:
     type: s3
     source:
       bucket: {{s3-bucket-release-candidates}}
-      regexp: pcfdemo-(.*).war
+      regexp: concourse-demo-(.*).jar
       access_key_id: {{s3-access-key-id}}
       secret_access_key: {{s3-secret-access-key}}
       region_name: {{s3-region-name}}
@@ -31,10 +31,10 @@ jobs:
   - name: unit-test
     public: true
     plan:
-      - get: pcfdemo
+      - get: concourse-demo
         trigger: true
       - task: unit
-        file: pcfdemo/ci/tasks/unit.yml
+        file: concourse-demo/ci/tasks/unit.yml
         params: &MAVENPARAMS
           MAVEN_OPTS: {{maven-opts}}
           MAVEN_CONFIG: {{maven-config}}
@@ -42,17 +42,17 @@ jobs:
   - name: build-artifact
     serial_groups: [ version ]
     plan:
-      - get: pcfdemo
+      - get: concourse-demo
         passed: [ unit-test ]
         trigger: true
       - get: version
         params: { pre: rc }
       - task: build
-        file: pcfdemo/ci/tasks/build.yml
+        file: concourse-demo/ci/tasks/build.yml
         params:
           <<: *MAVENPARAMS
       - put: candidate-release
-        params: { from: build/pcf-demo-(.*).war }
+        params: { from: build/concourse-demo-(.*).jar }
       - put: version
         params: { file: version/number }
 

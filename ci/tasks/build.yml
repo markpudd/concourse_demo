@@ -12,16 +12,16 @@ params:
   MAVEN_CONFIG:
 
 inputs:
-  - name: concoursedemo
+  - name: concourse-demo
   - name: version
 
 outputs:
   - name: build
 
 run:
-  path: pcfdemo/ci/tasks/build.sh
+  path: concourse-demo/ci/tasks/build.sh
   args: [
-    --input-dir, concoursedemo,
+    --input-dir, concourse-demo,
     --output-dir, build,
     --version-file, version/number,
     --artifactId, concourse-demo,
