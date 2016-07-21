@@ -27,4 +27,4 @@ fi
 
 cd $inputDir
 
-mvn test
+./mvnw test
